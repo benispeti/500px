@@ -1,12 +1,17 @@
 // This script is made for demonstrative purposes only. 
 // Use at your own risk. 
 // Respect the 500px's policy and terms of use.
+function alreadyLiked() {
+  return $('div[tabindex="0"] g[id*="Icon---Like---Filled"]').length;
+}
 function doClickLike() {
-	if ( $('div[tabindex="0"] g[id*="Icon---Like---Filled"]').length) {
+	if ( alreadyLiked()) {
 		console.log('Photo already liked. Skipping…');
+		return false;
 	} else {
 		console.log('Like the photo…');
-		$('div[tabindex="0"]').click();   
+		$('div[tabindex="0"]').click();
+		return true;
 	}
 }
 function doClickNextImage() {
@@ -26,11 +31,11 @@ function getRandomMilliseconds() {
 function loop() {
 	console.log('Script loading…please wait…');
 	setTimeout(function() {
-		doClickLike(); 
+		var clicked = doClickLike();
 		setTimeout(function() {
 			doClickNextImage();
 			loop();    
-		}, getRandomMilliseconds());
+		}, clicked ? getRandomMilliseconds() : getRandomMilliseconds() / 2);
 	}, getRandomMilliseconds());
 }
 loop();
